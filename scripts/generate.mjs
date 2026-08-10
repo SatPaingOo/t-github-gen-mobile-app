@@ -214,23 +214,26 @@ const KOTLIN_FILES = ['MainActivity.kt', 'MainApplication.kt'];
 function moveKotlinPackage(cfg) {
   const newPackageDir = path.join(KOTLIN_SRC, ...cfg.packageName.split('.'));
   const oldPackageDir = path.join(KOTLIN_SRC, OLD_PACKAGE_DIR);
-  const exists = (p) => fs.existsSync(p);
+  const sameDir = newPackageDir === oldPackageDir;
 
   for (const file of KOTLIN_FILES) {
     const oldFile = path.join(oldPackageDir, file);
-    if (!exists(oldFile)) {
+    if (!fs.existsSync(oldFile)) {
       continue; // already moved
     }
     let content = fs.readFileSync(oldFile, 'utf8');
     content = content.replace(/package\s+[a-zA-Z0-9_.{}]+/, `package ${cfg.packageName}`);
     fs.mkdirSync(newPackageDir, { recursive: true });
-    fs.writeFileSync(path.join(newPackageDir, file), content, 'utf8');
-    fs.rmSync(oldFile, { force: true });
+    const newFile = path.join(newPackageDir, file);
+    fs.writeFileSync(newFile, content, 'utf8');
+    if (!sameDir) {
+      fs.rmSync(oldFile, { force: true });
+    }
     log(`kotlin package -> ${cfg.packageName}/${file}`);
   }
 
-  // Remove leftover old package dir (only if it is empty)
-  if (exists(oldPackageDir)) {
+  // Remove leftover old package dir (only if it is empty and different)
+  if (!sameDir && fs.existsSync(oldPackageDir)) {
     const remaining = fs.readdirSync(oldPackageDir);
     if (remaining.length === 0) {
       fs.rmSync(oldPackageDir, { recursive: true });
@@ -274,6 +277,26 @@ async function generateIcons(cfg) {
 }
 
 /* ------------------------------------------------------------------ */
+/* Autolinking cache-bust                                             */
+/* ------------------------------------------------------------------ */
+
+/**
+ * The RN Gradle settings plugin caches the autolinking config keyed on the
+ * SHA of package.json (among lockfiles) — build.gradle namespace changes
+ * alone would NOT invalidate that cache, so the generated entry point would
+ * keep the old token. Bumping "tgenVersion" (an npm-ignored field) to the
+ * app version forces a fresh autolinking run on the next build.
+ */
+function bustAutolinkingCache(cfg) {
+  const packagePath = path.join(root, 'package.json');
+  const pkg = JSON.parse(fs.readFileSync(packagePath, 'utf8'));
+  if (pkg.tgenVersion === cfg.version) return;
+  pkg.tgenVersion = cfg.version;
+  fs.writeFileSync(packagePath, JSON.stringify(pkg, null, 2) + '\n', 'utf8');
+  log(`cache-bust: package.json tgenVersion -> ${cfg.version}`);
+}
+
+/* ------------------------------------------------------------------ */
 /* Main                                                                */
 /* ------------------------------------------------------------------ */
 
@@ -289,6 +312,7 @@ async function main() {
   log(`token files updated: ${touched}`);
 
   moveKotlinPackage(cfg);
+  bustAutolinkingCache(cfg);
   await generateIcons(cfg);
 
   log('done — template is ready to build');
