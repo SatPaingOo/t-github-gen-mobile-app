@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "appName": "TGen App",
+  "slug": "tgen-app",
+  "theme": "light",
+  "primaryColor": "#3B82F6",
+  "logoUrl": "assets/logo.png",
+  "supportEmail": "support@example.com",
+  "platforms": ["android"],
+  "packageName": "com.tgenapp",
+  "version": "1.0.0"
+}

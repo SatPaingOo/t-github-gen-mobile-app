@@ -1,0 +1,95 @@
+name: build-android
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Only one build per repo at a time (repo is single-purpose: one generated app)
+concurrency:
+  group: build-android
+  cancel-in-progress: false
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Apply app branding (app.config.json -> native configs/icons)
+        run: node scripts/generate.mjs
+
+      - name: Commit generated changes
+        run: |
+          git config user.name "tgen-bot"
+          git config user.email "tgen-bot@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No branding changes to commit"
+          else
+            # [skip ci] prevents this push from re-triggering the workflow (double build)
+            git commit -m "chore: apply app branding from app.config.json [skip ci]"
+            git push
+          fi
+
+  android:
+    needs: generate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Restore Gradle cache
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Build release APK
+        working-directory: android
+        run: ./gradlew assembleRelease
+
+      - name: Locate APK
+        id: apk
+        run: |
+          APK=$(ls android/app/build/outputs/apk/release/app-release.apk 2>/dev/null || true)
+          if [ -z "$APK" ]; then
+            # fallback: react-native gradle plugin may name it after the project
+            APK=$(ls android/app/build/outputs/apk/release/*.apk | head -1)
+          fi
+          echo "path=$APK" >> "$GITHUB_OUTPUT"
+          echo "APK path: $APK"
+
+      - name: Upload APK as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: apk
+          path: android/app/build/outputs/apk/release/*.apk
+          if-no-files-found: error
+          retention-days: 90
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: android-v1.0.0
+          name: Android APK
+          body: |
+            Generated app — installable debug-signed APK.
+          files: android/app/build/outputs/apk/release/*.apk
