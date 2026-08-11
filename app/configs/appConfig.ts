@@ -7,7 +7,7 @@
  * @format
  */
 
-import rawConfig from '../../app.config.json';
+import rawConfig from '@appConfig';
 
 export type ThemeMode = 'light' | 'dark' | 'system';
 

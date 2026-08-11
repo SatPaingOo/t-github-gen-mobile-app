@@ -5,14 +5,16 @@
  * @format
  */
 
-import type { NewNote, Note } from './types';
-import type { DbAdapter } from './db/types';
+import type { NewNote, Note } from '@/services/types';
+import type { DbAdapter } from '@/services/db/types';
 
 let uidCounter = 0;
 
 function genId(): string {
   uidCounter = (uidCounter + 1) % 1000;
-  return `${Date.now().toString(36)}-${uidCounter}-${Math.random().toString(36).slice(2, 8)}`;
+  return `${Date.now().toString(36)}-${uidCounter}-${Math.random()
+    .toString(36)
+    .slice(2, 8)}`;
 }
 
 export function createNoteRepo(db: DbAdapter) {

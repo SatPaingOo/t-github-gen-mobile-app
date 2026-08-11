@@ -5,10 +5,10 @@
  */
 
 import { Pressable, StyleSheet, Text, View } from 'react-native';
-import { useTheme } from '../contexts/ThemeContext';
-import type { Note } from '../services/types';
-import { timeAgo, truncate } from '../configs/constants';
-import { IconButton } from './ui/IconButton';
+import { useTheme } from '@/contexts/ThemeContext';
+import type { Note } from '@/services/types';
+import { timeAgo, truncate } from '@/configs/constants';
+import { IconButton } from '@/components/ui/IconButton';
 
 interface Props {
   note: Note;
@@ -26,18 +26,28 @@ export function NoteCard({ note, onOpen, onDelete }: Props) {
         styles.card,
         { backgroundColor: colors.surface, borderColor: colors.border },
         pressed && { opacity: 0.7 },
-      ]}>
+      ]}
+    >
       <View style={[styles.accent, { backgroundColor: note.color }]} />
       <View style={styles.body}>
         <Text style={[styles.title, { color: colors.text }]} numberOfLines={1}>
           {note.title || 'Untitled'}
         </Text>
-        <Text style={[styles.preview, { color: colors.textMuted }]} numberOfLines={2}>
+        <Text
+          style={[styles.preview, { color: colors.textMuted }]}
+          numberOfLines={2}
+        >
           {truncate(note.body || 'No content', 120)}
         </Text>
-        <Text style={[styles.time, { color: colors.textMuted }]}>{timeAgo(note.updatedAt)}</Text>
+        <Text style={[styles.time, { color: colors.textMuted }]}>
+          {timeAgo(note.updatedAt)}
+        </Text>
       </View>
-      <IconButton glyph="🗑" onPress={() => onDelete(note.id)} label="Delete note" />
+      <IconButton
+        glyph="🗑"
+        onPress={() => onDelete(note.id)}
+        label="Delete note"
+      />
     </Pressable>
   );
 }

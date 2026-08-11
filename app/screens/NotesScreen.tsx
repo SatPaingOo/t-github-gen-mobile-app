@@ -6,13 +6,13 @@
 
 import { useState } from 'react';
 import { Alert, FlatList, StyleSheet, TextInput, View } from 'react-native';
-import { useApp } from '../contexts/AppContext';
-import { useTheme } from '../contexts/ThemeContext';
-import { NoteCard } from '../components/NoteCard';
-import { EmptyState } from '../components/ui/EmptyState';
-import { IconButton } from '../components/ui/IconButton';
-import type { Note } from '../services/types';
-import { AddNoteModal } from './AddNoteModal';
+import { useApp } from '@/contexts/AppContext';
+import { useTheme } from '@/contexts/ThemeContext';
+import { NoteCard } from '@/components/NoteCard';
+import { EmptyState } from '@/components/ui/EmptyState';
+import { IconButton } from '@/components/ui/IconButton';
+import type { Note } from '@/services/types';
+import { AddNoteModal } from '@/screens/AddNoteModal';
 
 export function NotesScreen() {
   const { notes, addNote, updateNote, deleteNote } = useApp();
@@ -23,7 +23,9 @@ export function NotesScreen() {
 
   const filtered = query
     ? notes.filter(
-        n => n.title.toLowerCase().includes(query.toLowerCase()) || n.body.toLowerCase().includes(query.toLowerCase()),
+        n =>
+          n.title.toLowerCase().includes(query.toLowerCase()) ||
+          n.body.toLowerCase().includes(query.toLowerCase()),
       )
     : notes;
 
@@ -37,7 +39,12 @@ export function NotesScreen() {
   return (
     <View style={{ flex: 1 }}>
       <View style={styles.searchWrap}>
-        <View style={[styles.search, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+        <View
+          style={[
+            styles.search,
+            { backgroundColor: colors.surface, borderColor: colors.border },
+          ]}
+        >
           <TextInput
             style={[styles.searchInput, { color: colors.text }]}
             placeholder="Search notes…"
@@ -46,7 +53,16 @@ export function NotesScreen() {
             onChangeText={setQuery}
           />
         </View>
-        <IconButton glyph="✚" onPress={() => { setEditing(null); setModalOpen(true); }} color={colors.accent} size={22} label="Add note" />
+        <IconButton
+          glyph="✚"
+          onPress={() => {
+            setEditing(null);
+            setModalOpen(true);
+          }}
+          color={colors.accent}
+          size={22}
+          label="Add note"
+        />
       </View>
 
       <FlatList
@@ -55,7 +71,10 @@ export function NotesScreen() {
         renderItem={({ item }) => (
           <NoteCard
             note={item}
-            onOpen={note => { setEditing(note); setModalOpen(true); }}
+            onOpen={note => {
+              setEditing(note);
+              setModalOpen(true);
+            }}
             onDelete={confirmDelete}
           />
         )}
@@ -64,7 +83,11 @@ export function NotesScreen() {
           <EmptyState
             glyph={query ? '🔍' : '🗒'}
             title={query ? 'No matches' : 'No notes yet'}
-            subtitle={query ? 'Try a different search.' : 'Tap + to create your first note.'}
+            subtitle={
+              query
+                ? 'Try a different search.'
+                : 'Tap + to create your first note.'
+            }
           />
         }
       />

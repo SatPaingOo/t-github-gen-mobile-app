@@ -8,9 +8,15 @@
  */
 
 import { open } from '@op-engineering/op-sqlite';
-import { SCHEMA_SQL } from '../../app/services/db/schema';
-import type { DbAdapter } from '../../app/services/db/types';
-import type { NewNote, NewTodo, Note, Todo, TodoPriority } from '../../app/services/types';
+import { SCHEMA_SQL } from '@/services/db/schema';
+import type { DbAdapter } from '@/services/db/types';
+import type {
+  NewNote,
+  NewTodo,
+  Note,
+  Todo,
+  TodoPriority,
+} from '@/services/types';
 
 export function createInMemoryAdapter(): DbAdapter {
   const db = open({ name: 'test.db' });
@@ -42,7 +48,9 @@ export function createInMemoryAdapter(): DbAdapter {
 
     listNotes: () => db.executeSync('SELECT * FROM notes').rows.map(toNote),
     getNote: id => {
-      const found = db.executeSync('SELECT * FROM notes WHERE id = ?', [id]).rows;
+      const found = db.executeSync('SELECT * FROM notes WHERE id = ?', [
+        id,
+      ]).rows;
       return found.length ? toNote(found[0]) : null;
     },
     insertNote(note: NewNote) {
@@ -63,13 +71,10 @@ export function createInMemoryAdapter(): DbAdapter {
       const existing = this.getNote(id);
       if (!existing) return null;
       const next = { ...existing, ...patch, updatedAt: now() };
-      db.executeSync('UPDATE notes SET title = ?, body = ?, color = ?, updated_at = ? WHERE id = ?', [
-        next.title,
-        next.body,
-        next.color,
-        next.updatedAt,
-        id,
-      ]);
+      db.executeSync(
+        'UPDATE notes SET title = ?, body = ?, color = ?, updated_at = ? WHERE id = ?',
+        [next.title, next.body, next.color, next.updatedAt, id],
+      );
       return next;
     },
     deleteNote: id => db.executeSync('DELETE FROM notes WHERE id = ?', [id]),
@@ -86,7 +91,14 @@ export function createInMemoryAdapter(): DbAdapter {
       };
       db.executeSync(
         'INSERT INTO todos (id, title, done, priority, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)',
-        [row.id, row.title, row.done ? 1 : 0, row.priority, row.createdAt, row.updatedAt],
+        [
+          row.id,
+          row.title,
+          row.done ? 1 : 0,
+          row.priority,
+          row.createdAt,
+          row.updatedAt,
+        ],
       );
       return row;
     },
@@ -94,13 +106,10 @@ export function createInMemoryAdapter(): DbAdapter {
       const existing = this.listTodos().find(t => t.id === id);
       if (!existing) return null;
       const next = { ...existing, ...patch, updatedAt: now() };
-      db.executeSync('UPDATE todos SET title = ?, done = ?, priority = ?, updated_at = ? WHERE id = ?', [
-        next.title,
-        next.done ? 1 : 0,
-        next.priority,
-        next.updatedAt,
-        id,
-      ]);
+      db.executeSync(
+        'UPDATE todos SET title = ?, done = ?, priority = ?, updated_at = ? WHERE id = ?',
+        [next.title, next.done ? 1 : 0, next.priority, next.updatedAt, id],
+      );
       return next;
     },
     deleteTodo: id => db.executeSync('DELETE FROM todos WHERE id = ?', [id]),

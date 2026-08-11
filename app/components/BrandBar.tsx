@@ -5,8 +5,8 @@
  */
 
 import { StyleSheet, Text, View } from 'react-native';
-import { useTheme } from '../contexts/ThemeContext';
-import { appConfig } from '../configs/appConfig';
+import { useTheme } from '@/contexts/ThemeContext';
+import { appConfig } from '@/configs/appConfig';
 
 export function BrandBar() {
   const { colors } = useTheme();

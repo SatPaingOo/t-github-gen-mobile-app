@@ -11,7 +11,7 @@
  * @format
  */
 
-import type { NewNote, NewTodo, Note, Todo } from '../types';
+import type { NewNote, NewTodo, Note, Todo } from '@/services/types';
 
 export interface DbAdapter {
   init(): void;
@@ -23,6 +23,9 @@ export interface DbAdapter {
   deleteNote(id: string): void;
   listTodos(): Todo[];
   insertTodo(todo: NewTodo): Todo;
-  updateTodo(id: string, patch: Partial<Pick<Todo, 'title' | 'done' | 'priority'>>): Todo | null;
+  updateTodo(
+    id: string,
+    patch: Partial<Pick<Todo, 'title' | 'done' | 'priority'>>,
+  ): Todo | null;
   deleteTodo(id: string): void;
 }

@@ -5,9 +5,9 @@
  * @format
  */
 
-import { PRIORITY_META } from '../configs/constants';
-import type { NewTodo, Todo, TodoPriority } from './types';
-import type { DbAdapter } from './db/types';
+import { PRIORITY_META } from '@/configs/constants';
+import type { NewTodo, Todo, TodoPriority } from '@/services/types';
+import type { DbAdapter } from '@/services/db/types';
 
 export function createTodoRepo(db: DbAdapter) {
   return {
@@ -18,7 +18,9 @@ export function createTodoRepo(db: DbAdapter) {
         .sort((a, b) => {
           const done = Number(a.done) - Number(b.done);
           if (done !== 0) return done;
-          return PRIORITY_META[b.priority].order - PRIORITY_META[a.priority].order;
+          return (
+            PRIORITY_META[b.priority].order - PRIORITY_META[a.priority].order
+          );
         });
     },
     add(input: NewTodo): Todo {

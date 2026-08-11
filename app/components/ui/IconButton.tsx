@@ -5,7 +5,7 @@
  */
 
 import { Pressable, StyleSheet, Text } from 'react-native';
-import { useTheme } from '../../contexts/ThemeContext';
+import { useTheme } from '@/contexts/ThemeContext';
 
 interface Props {
   glyph: string;
@@ -23,8 +23,15 @@ export function IconButton({ glyph, onPress, color, size = 20, label }: Props) {
       onPress={onPress}
       accessibilityLabel={label ?? glyph}
       hitSlop={8}
-      style={({ pressed }) => [styles.btn, pressed && styles.pressed]}>
-      <Text style={{ fontSize: size, color: color ?? colors.textMuted, lineHeight: size + 2 }}>
+      style={({ pressed }) => [styles.btn, pressed && styles.pressed]}
+    >
+      <Text
+        style={{
+          fontSize: size,
+          color: color ?? colors.textMuted,
+          lineHeight: size + 2,
+        }}
+      >
         {glyph}
       </Text>
     </Pressable>

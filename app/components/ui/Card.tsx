@@ -5,7 +5,7 @@
  */
 
 import { StyleSheet, View, type ViewProps } from 'react-native';
-import { useTheme } from '../../contexts/ThemeContext';
+import { useTheme } from '@/contexts/ThemeContext';
 
 interface Props extends ViewProps {
   padded?: boolean;
@@ -25,7 +25,8 @@ export function Card({ padded = true, style, children, ...rest }: Props) {
         },
         style,
       ]}
-      {...rest}>
+      {...rest}
+    >
       {children}
     </View>
   );

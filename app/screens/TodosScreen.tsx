@@ -6,12 +6,12 @@
 
 import { useState } from 'react';
 import { FlatList, StyleSheet, Text, TextInput, View } from 'react-native';
-import { useApp } from '../contexts/AppContext';
-import { useTheme } from '../contexts/ThemeContext';
-import { TodoItem } from '../components/TodoItem';
-import { EmptyState } from '../components/ui/EmptyState';
-import { IconButton } from '../components/ui/IconButton';
-import type { TodoPriority } from '../services/types';
+import { useApp } from '@/contexts/AppContext';
+import { useTheme } from '@/contexts/ThemeContext';
+import { TodoItem } from '@/components/TodoItem';
+import { EmptyState } from '@/components/ui/EmptyState';
+import { IconButton } from '@/components/ui/IconButton';
+import type { TodoPriority } from '@/services/types';
 
 export function TodosScreen() {
   const { todos, addTodo, toggleTodo, setTodoPriority, deleteTodo } = useApp();
@@ -32,7 +32,12 @@ export function TodosScreen() {
     <View style={{ flex: 1 }}>
       <View style={[styles.summary, { backgroundColor: colors.surfaceAlt }]}>
         <View style={styles.progressTrack}>
-          <View style={[styles.progressFill, { backgroundColor: colors.accent, width: `${progress}%` }]} />
+          <View
+            style={[
+              styles.progressFill,
+              { backgroundColor: colors.accent, width: `${progress}%` },
+            ]}
+          />
         </View>
         <Text style={[styles.summaryText, { color: colors.textMuted }]}>
           {done} of {todos.length} done · {progress}%
@@ -41,7 +46,14 @@ export function TodosScreen() {
 
       <View style={styles.addRow}>
         <TextInput
-          style={[styles.addInput, { backgroundColor: colors.surface, borderColor: colors.border, color: colors.text }]}
+          style={[
+            styles.addInput,
+            {
+              backgroundColor: colors.surface,
+              borderColor: colors.border,
+              color: colors.text,
+            },
+          ]}
           placeholder="Add a task…"
           placeholderTextColor={colors.textMuted}
           value={draft}
@@ -49,7 +61,13 @@ export function TodosScreen() {
           onSubmitEditing={submit}
           returnKeyType="done"
         />
-        <IconButton glyph="✚" onPress={submit} color={colors.accent} size={22} label="Add task" />
+        <IconButton
+          glyph="✚"
+          onPress={submit}
+          color={colors.accent}
+          size={22}
+          label="Add task"
+        />
       </View>
 
       <FlatList
@@ -59,13 +77,19 @@ export function TodosScreen() {
           <TodoItem
             todo={item}
             onToggle={toggleTodo}
-            onCyclePriority={(id, priority: TodoPriority) => setTodoPriority(id, priority)}
+            onCyclePriority={(id, priority: TodoPriority) =>
+              setTodoPriority(id, priority)
+            }
             onDelete={deleteTodo}
           />
         )}
         contentContainerStyle={styles.list}
         ListEmptyComponent={
-          <EmptyState glyph="✅" title="All clear!" subtitle="Add a task to get started." />
+          <EmptyState
+            glyph="✅"
+            title="All clear!"
+            subtitle="Add a task to get started."
+          />
         }
       />
     </View>

@@ -15,9 +15,9 @@ import {
   TextInput,
   View,
 } from 'react-native';
-import { useTheme } from '../contexts/ThemeContext';
-import { NOTE_COLORS } from '../configs/constants';
-import type { Note } from '../services/types';
+import { useTheme } from '@/contexts/ThemeContext';
+import { NOTE_COLORS } from '@/configs/constants';
+import type { Note } from '@/services/types';
 
 interface Props {
   visible: boolean;
@@ -55,17 +55,25 @@ export function AddNoteModal({ visible, note, onSave, onClose }: Props) {
   ];
 
   return (
-    <Modal visible={visible} transparent animationType="fade" onRequestClose={onClose}>
+    <Modal
+      visible={visible}
+      transparent
+      animationType="fade"
+      onRequestClose={onClose}
+    >
       <KeyboardAvoidingView
         style={styles.backdrop}
-        behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      >
         <View style={[styles.sheet, { backgroundColor: colors.surface }]}>
           <View style={styles.header}>
             <Text style={[styles.headerTitle, { color: colors.text }]}>
               {note ? 'Edit note' : 'New note'}
             </Text>
             <Pressable onPress={onClose} hitSlop={8}>
-              <Text style={[styles.cancel, { color: colors.textMuted }]}>Cancel</Text>
+              <Text style={[styles.cancel, { color: colors.textMuted }]}>
+                Cancel
+              </Text>
             </Pressable>
           </View>
 
@@ -94,7 +102,10 @@ export function AddNoteModal({ visible, note, onSave, onClose }: Props) {
                 style={[
                   styles.colorSwatch,
                   { backgroundColor: c },
-                  color === c && { borderWidth: 3, borderColor: isDark ? '#FFFFFF' : '#0F172A' },
+                  color === c && {
+                    borderWidth: 3,
+                    borderColor: isDark ? '#FFFFFF' : '#0F172A',
+                  },
                 ]}
               />
             ))}
@@ -106,8 +117,11 @@ export function AddNoteModal({ visible, note, onSave, onClose }: Props) {
               styles.saveBtn,
               { backgroundColor: colors.accent },
               pressed && { opacity: 0.8 },
-            ]}>
-            <Text style={styles.saveText}>{note ? 'Save changes' : 'Add note'}</Text>
+            ]}
+          >
+            <Text style={styles.saveText}>
+              {note ? 'Save changes' : 'Add note'}
+            </Text>
           </Pressable>
         </View>
       </KeyboardAvoidingView>

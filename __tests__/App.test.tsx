@@ -5,11 +5,11 @@
 import React from 'react';
 import ReactTestRenderer from 'react-test-renderer';
 import { Text } from 'react-native';
-import { AppProvider } from '../app/contexts/AppContext';
-import { ThemeProvider } from '../app/contexts/ThemeContext';
+import { AppProvider } from '@/contexts/AppContext';
+import { ThemeProvider } from '@/contexts/ThemeContext';
 import { createInMemoryAdapter } from './helpers/inMemoryAdapter';
-import { NotesScreen } from '../app/screens/NotesScreen';
-import { TodosScreen } from '../app/screens/TodosScreen';
+import { NotesScreen } from '@/screens/NotesScreen';
+import { TodosScreen } from '@/screens/TodosScreen';
 
 test('NotesScreen renders empty state', async () => {
   let tree: ReactTestRenderer.ReactTestRenderer;

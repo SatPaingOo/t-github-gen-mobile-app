@@ -17,11 +17,17 @@ import {
   useState,
   type ReactNode,
 } from 'react';
-import type { DbAdapter } from '../services/db/types';
-import { createNoteRepo } from '../services/noteRepo';
-import { createTodoRepo } from '../services/todoRepo';
-import type { NewNote, NewTodo, Note, Todo, TodoPriority } from '../services/types';
-import { createOpSqliteAdapter } from '../services/db/opSqliteAdapter';
+import type { DbAdapter } from '@/services/db/types';
+import { sqliteAdapter } from '@/services/db';
+import { createNoteRepo } from '@/services/noteRepo';
+import { createTodoRepo } from '@/services/todoRepo';
+import type {
+  NewNote,
+  NewTodo,
+  Note,
+  Todo,
+  TodoPriority,
+} from '@/services/types';
 
 interface AppContextValue {
   ready: boolean;
@@ -51,7 +57,7 @@ export function AppProvider({
 
   const dbRef = useRef<DbAdapter | null>(null);
   if (!dbRef.current) {
-    dbRef.current = adapter ?? createOpSqliteAdapter();
+    dbRef.current = adapter ?? sqliteAdapter;
   }
   const repos = useMemo(() => {
     const db = dbRef.current!;
@@ -143,7 +149,18 @@ export function AppProvider({
       setTodoPriority,
       deleteTodo,
     }),
-    [ready, notes, todos, addNote, updateNote, deleteNote, addTodo, toggleTodo, setTodoPriority, deleteTodo],
+    [
+      ready,
+      notes,
+      todos,
+      addNote,
+      updateNote,
+      deleteNote,
+      addTodo,
+      toggleTodo,
+      setTodoPriority,
+      deleteTodo,
+    ],
   );
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

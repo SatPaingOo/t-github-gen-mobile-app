@@ -5,7 +5,7 @@
  */
 
 import { StyleSheet, Text, View } from 'react-native';
-import { useTheme } from '../../contexts/ThemeContext';
+import { useTheme } from '@/contexts/ThemeContext';
 
 interface Props {
   glyph: string;
@@ -18,12 +18,16 @@ export function EmptyState({ glyph, title, subtitle }: Props) {
 
   return (
     <View style={styles.wrap}>
-      <View style={[styles.glyphCircle, { backgroundColor: colors.accentSoft }]}>
+      <View
+        style={[styles.glyphCircle, { backgroundColor: colors.accentSoft }]}
+      >
         <Text style={[styles.glyph, { color: colors.accent }]}>{glyph}</Text>
       </View>
       <Text style={[styles.title, { color: colors.text }]}>{title}</Text>
       {subtitle ? (
-        <Text style={[styles.subtitle, { color: colors.textMuted }]}>{subtitle}</Text>
+        <Text style={[styles.subtitle, { color: colors.textMuted }]}>
+          {subtitle}
+        </Text>
       ) : null}
     </View>
   );

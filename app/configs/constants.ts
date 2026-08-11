@@ -4,14 +4,24 @@
  * @format
  */
 
-import type { AppConfig } from './appConfig';
+import type { AppConfig } from '@/configs/appConfig';
 
 /** Accent colors offered when editing a note. */
-export const NOTE_COLORS = ['#F59E0B', '#10B981', '#3B82F6', '#8B5CF6', '#EF4444', '#64748B'];
+export const NOTE_COLORS = [
+  '#F59E0B',
+  '#10B981',
+  '#3B82F6',
+  '#8B5CF6',
+  '#EF4444',
+  '#64748B',
+];
 
 export type TodoPriority = 'low' | 'medium' | 'high';
 
-export const PRIORITY_META: Record<TodoPriority, { label: string; color: string; order: number }> = {
+export const PRIORITY_META: Record<
+  TodoPriority,
+  { label: string; color: string; order: number }
+> = {
   low: { label: 'Low', color: '#22C55E', order: 0 },
   medium: { label: 'Med', color: '#F59E0B', order: 1 },
   high: { label: 'High', color: '#EF4444', order: 2 },
@@ -37,7 +47,10 @@ export function truncate(text: string, max: number): string {
 }
 
 /** Resolve the effective palette from app.config.json theme (+ system pref). */
-export function resolvePalette(theme: AppConfig['theme'], systemDark: boolean): 'light' | 'dark' {
+export function resolvePalette(
+  theme: AppConfig['theme'],
+  systemDark: boolean,
+): 'light' | 'dark' {
   if (theme === 'system') return systemDark ? 'dark' : 'light';
   return theme;
 }

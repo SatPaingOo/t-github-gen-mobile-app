@@ -8,9 +8,15 @@
  */
 
 import { open } from '@op-engineering/op-sqlite';
-import { SCHEMA_SQL } from './schema';
-import type { DbAdapter } from './types';
-import type { NewNote, NewTodo, Note, Todo, TodoPriority } from '../types';
+import { SCHEMA_SQL } from '@/services/db/schema';
+import type { DbAdapter } from '@/services/db/types';
+import type {
+  NewNote,
+  NewTodo,
+  Note,
+  Todo,
+  TodoPriority,
+} from '@/services/types';
 
 type SqliteResult = { rows: Record<string, unknown>[]; rowsAffected: number };
 
@@ -72,7 +78,9 @@ export function createOpSqliteAdapter(): DbAdapter {
       return rows(ensureDb().executeSync('SELECT * FROM notes')).map(toNote);
     },
     getNote(id: string): Note | null {
-      const found = rows(ensureDb().executeSync('SELECT * FROM notes WHERE id = ?', [id]));
+      const found = rows(
+        ensureDb().executeSync('SELECT * FROM notes WHERE id = ?', [id]),
+      );
       return found.length ? toNote(found[0]) : null;
     },
     insertNote(note: NewNote): Note {
@@ -117,7 +125,14 @@ export function createOpSqliteAdapter(): DbAdapter {
       };
       ensureDb().executeSync(
         'INSERT INTO todos (id, title, done, priority, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)',
-        [row.id, row.title, row.done ? 1 : 0, row.priority, row.createdAt, row.updatedAt],
+        [
+          row.id,
+          row.title,
+          row.done ? 1 : 0,
+          row.priority,
+          row.createdAt,
+          row.updatedAt,
+        ],
       );
       return row;
     },
@@ -139,3 +154,6 @@ export function createOpSqliteAdapter(): DbAdapter {
     },
   };
 }
+
+/** Uniform adapter instance consumed by the shared core (services/db/index.ts). */
+export const sqliteAdapter: DbAdapter = createOpSqliteAdapter();

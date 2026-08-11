@@ -5,13 +5,23 @@
  */
 
 import { useState } from 'react';
-import { Pressable, StatusBar, StyleSheet, Text, View } from 'react-native';
-import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
-import { AppProvider } from './contexts/AppContext';
-import { ThemeProvider, useTheme } from './contexts/ThemeContext';
-import { BrandBar } from './components/BrandBar';
-import { NotesScreen } from './screens/NotesScreen';
-import { TodosScreen } from './screens/TodosScreen';
+import {
+  Pressable,
+  StatusBar,
+  StyleSheet,
+  Text,
+  useColorScheme,
+  View,
+} from 'react-native';
+import {
+  SafeAreaProvider,
+  useSafeAreaInsets,
+} from 'react-native-safe-area-context';
+import { AppProvider } from '@/contexts/AppContext';
+import { ThemeProvider, useTheme } from '@/contexts/ThemeContext';
+import { BrandBar } from '@/components/BrandBar';
+import { NotesScreen } from '@/screens/NotesScreen';
+import { TodosScreen } from '@/screens/TodosScreen';
 
 type Tab = 'notes' | 'todos';
 
@@ -26,7 +36,12 @@ function Shell() {
   const { colors, isDark } = useTheme();
 
   return (
-    <View style={[styles.root, { backgroundColor: colors.background, paddingBottom: insets.bottom }]}>
+    <View
+      style={[
+        styles.root,
+        { backgroundColor: colors.background, paddingBottom: insets.bottom },
+      ]}
+    >
       <StatusBar barStyle={isDark ? 'light-content' : 'dark-content'} />
       <BrandBar />
 
@@ -34,21 +49,35 @@ function Shell() {
         {tab === 'notes' ? <NotesScreen /> : <TodosScreen />}
       </View>
 
-      <View style={[styles.tabBar, { backgroundColor: colors.surface, borderTopColor: colors.border }]}>
+      <View
+        style={[
+          styles.tabBar,
+          { backgroundColor: colors.surface, borderTopColor: colors.border },
+        ]}
+      >
         {TABS.map(t => {
           const active = tab === t.key;
           return (
-            <Pressable key={t.key} style={styles.tab} onPress={() => setTab(t.key)}>
+            <Pressable
+              key={t.key}
+              style={styles.tab}
+              onPress={() => setTab(t.key)}
+            >
               <Text style={{ fontSize: 18 }}>{t.glyph}</Text>
               <Text
                 style={[
                   styles.tabLabel,
                   { color: active ? colors.accent : colors.textMuted },
                   active && { fontWeight: '700' },
-                ]}>
+                ]}
+              >
                 {t.label}
               </Text>
-              {active ? <View style={[styles.tabDot, { backgroundColor: colors.accent }]} /> : null}
+              {active ? (
+                <View
+                  style={[styles.tabDot, { backgroundColor: colors.accent }]}
+                />
+              ) : null}
             </Pressable>
           );
         })}
@@ -58,9 +87,11 @@ function Shell() {
 }
 
 function App() {
+  const systemDark = useColorScheme() === 'dark';
+
   return (
     <SafeAreaProvider>
-      <ThemeProvider>
+      <ThemeProvider systemDark={systemDark}>
         <AppProvider>
           <Shell />
         </AppProvider>
