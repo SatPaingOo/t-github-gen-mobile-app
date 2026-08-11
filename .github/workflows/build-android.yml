@@ -10,6 +10,10 @@ concurrency:
   group: build-android
   cancel-in-progress: false
 
+# generate job pushes the branded files and the release job creates a Release
+permissions:
+  contents: write
+
 jobs:
   generate:
     runs-on: ubuntu-latest
