@@ -77,13 +77,13 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
-    namespace "{{PACKAGE_NAME}}"
+    namespace "com.tgenapp"
     defaultConfig {
-        applicationId "{{PACKAGE_NAME}}"
+        applicationId "com.tgenapp"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode {{VERSION_CODE}}
-        versionName "{{VERSION_NAME}}"
+        versionCode 10000
+        versionName "1.0.0"
     }
     signingConfigs {
         debug {

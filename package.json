@@ -1,7 +1,7 @@
 {
   "name": "TGenApp",
   "version": "0.0.1",
-  "tgenVersion": "0.0.1",
+  "tgenVersion": "1.0.0",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
