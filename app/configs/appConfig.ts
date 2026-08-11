@@ -17,6 +17,7 @@ export interface AppConfig {
   slug: string;
   theme: ThemeMode;
   primaryColor: string;
+  secondaryColor: string;
   logoUrl: string;
   supportEmail: string;
   platforms: string[];

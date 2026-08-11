@@ -1,18 +1,18 @@
 /**
- * BrandBar — accent-colored strip showing the generated app name.
+ * BrandBar — brand strip at the top. Uses the secondary color (accent = primary),
+ * so both brand colors are visible in the app.
  *
  * @format
  */
 
 import { StyleSheet, Text, View } from 'react-native';
-import { useTheme } from '@/contexts/ThemeContext';
 import { appConfig } from '@/configs/appConfig';
 
 export function BrandBar() {
-  const { colors } = useTheme();
+  const secondary = appConfig.secondaryColor || appConfig.primaryColor;
 
   return (
-    <View style={[styles.bar, { backgroundColor: colors.accent }]}>
+    <View style={[styles.bar, { backgroundColor: secondary }]}>
       <Text style={styles.text}>{appConfig.appName}</Text>
       <Text style={styles.sub}>· TGen</Text>
     </View>

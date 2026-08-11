@@ -4,6 +4,7 @@
   "slug": "tgen-app",
   "theme": "light",
   "primaryColor": "#3B82F6",
+  "secondaryColor": "#64748B",
   "logoUrl": "assets/logo.png",
   "supportEmail": "support@example.com",
   "platforms": ["android"],
