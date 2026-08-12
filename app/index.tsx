@@ -20,7 +20,6 @@ import {
 import { AppProvider } from '@/contexts/AppContext';
 import { ThemeProvider, useTheme } from '@/contexts/ThemeContext';
 import { appConfig } from '@/configs/appConfig';
-import { BrandBar } from '@/components/BrandBar';
 import { NotesScreen } from '@/screens/NotesScreen';
 import { TodosScreen } from '@/screens/TodosScreen';
 import { AboutScreen } from '@/screens/AboutScreen';
@@ -46,7 +45,6 @@ function Shell() {
       ]}
     >
       <StatusBar barStyle={isDark ? 'light-content' : 'dark-content'} />
-      <BrandBar />
 
       <View style={styles.content}>
         {tab === 'notes' ? (
