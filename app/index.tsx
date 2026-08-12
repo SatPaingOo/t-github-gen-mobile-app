@@ -19,6 +19,7 @@ import {
 } from 'react-native-safe-area-context';
 import { AppProvider } from '@/contexts/AppContext';
 import { ThemeProvider, useTheme } from '@/contexts/ThemeContext';
+import { appConfig } from '@/configs/appConfig';
 import { BrandBar } from '@/components/BrandBar';
 import { NotesScreen } from '@/screens/NotesScreen';
 import { TodosScreen } from '@/screens/TodosScreen';
@@ -82,6 +83,11 @@ function Shell() {
           );
         })}
       </View>
+
+      {/* subtle credit line — the app belongs to the user, TGen only builds it */}
+      <Text style={[styles.credit, { color: colors.textMuted }]}>
+        Made with TGen · v{appConfig.version}
+      </Text>
     </View>
   );
 }
@@ -128,5 +134,10 @@ const styles = StyleSheet.create({
     height: 4,
     borderRadius: 2,
     marginTop: 2,
+  },
+  credit: {
+    fontSize: 10,
+    textAlign: 'center',
+    paddingVertical: 6,
   },
 });

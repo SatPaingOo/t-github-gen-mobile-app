@@ -14,7 +14,7 @@ export function BrandBar() {
   return (
     <View style={[styles.bar, { backgroundColor: secondary }]}>
       <Text style={styles.text}>{appConfig.appName}</Text>
-      <Text style={styles.sub}>· TGen</Text>
+      <Text style={styles.sub}>· Powered by TGen</Text>
     </View>
   );
 }
