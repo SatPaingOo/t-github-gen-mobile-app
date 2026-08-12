@@ -10,12 +10,12 @@ concurrency:
   group: build-android
   cancel-in-progress: false
 
-# generate job pushes the branded files and the release job creates a Release
+# release job creates a GitHub Release
 permissions:
   contents: write
 
 jobs:
-  generate:
+  android:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -30,33 +30,6 @@ jobs:
 
       - name: Apply app branding (app.config.json -> native configs/icons)
         run: node scripts/generate.mjs
-
-      - name: Commit generated changes
-        run: |
-          git config user.name "tgen-bot"
-          git config user.email "tgen-bot@users.noreply.github.com"
-          git add -A
-          if git diff --cached --quiet; then
-            echo "No branding changes to commit"
-          else
-            # [skip ci] prevents this push from re-triggering the workflow (double build)
-            git commit -m "chore: apply app branding from app.config.json [skip ci]"
-            git push
-          fi
-
-  android:
-    needs: generate
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: npm
-
-      - name: Install dependencies
-        run: npm ci
 
       - uses: actions/setup-java@v4
         with:

@@ -1,4 +1,4 @@
-package com.tgenapp
+package {{PACKAGE_NAME}}
 
 import android.app.Application
 import com.facebook.react.PackageList
