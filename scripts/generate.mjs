@@ -146,6 +146,7 @@ function tokenMap(cfg) {
 
 const TOKEN_FILE_PATTERNS = [
   'app.json',
+  'android/app/src/main/AndroidManifest.xml',
   'android/app/src/main/res/values/strings.xml',
   'android/app/src/main/res/values/colors.xml',
   'android/app/src/main/res/values/styles.xml',
