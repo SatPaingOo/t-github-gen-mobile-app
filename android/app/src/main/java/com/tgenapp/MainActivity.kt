@@ -1,4 +1,4 @@
-package {{PACKAGE_NAME}}
+package com.tgenapp
 
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate
