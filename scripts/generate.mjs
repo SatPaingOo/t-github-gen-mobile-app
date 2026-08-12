@@ -226,6 +226,8 @@ function moveKotlinPackage(cfg) {
     }
     let content = fs.readFileSync(oldFile, 'utf8');
     content = content.replace(/package\s+[a-zA-Z0-9_.{}]+/, `package ${cfg.packageName}`);
+    // MainActivity.getMainComponentName() must match the JS-registered name
+    content = content.replace(/\{\{APP_NAME_JS\}\}/g, cfg.jsName);
     fs.mkdirSync(newPackageDir, { recursive: true });
     const newFile = path.join(newPackageDir, file);
     fs.writeFileSync(newFile, content, 'utf8');
