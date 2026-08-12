@@ -33,9 +33,8 @@ export const PRIORITIES: TodoPriority[] = ['low', 'medium', 'high'];
 export const TGenInfo = {
   name: 'TGen',
   tagline: 'App Generator',
-  description:
-    'This app was generated with TGen — a demo app generator. Pick a name, colors and a logo, and TGen builds a real installable app for you.',
-  url: 'https://github.com/SatPaingOo/t-github-generate',
+  description: 'This app was built with TGen — a demo app generator.',
+  url: 'github.com/SatPaingOo/t-github-generate',
 };
 
 /** "5m ago" style relative time, given a UTC millisecond timestamp. */

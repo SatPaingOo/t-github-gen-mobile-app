@@ -10,7 +10,7 @@
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { appConfig } from '@/configs/appConfig';
-import { TGenInfo, truncate } from '@/configs/constants';
+import { TGenInfo } from '@/configs/constants';
 import { useTheme } from '@/contexts/ThemeContext';
 import type { ThemeMode } from '@/configs/appConfig';
 
@@ -106,22 +106,33 @@ export function AboutScreen() {
         />
       </View>
 
-      {/* TGen info */}
+      {/* TGen info — compact */}
       <View
         style={[
-          styles.card,
-          { backgroundColor: colors.surface, borderColor: colors.border },
+          styles.tgenCard,
+          {
+            backgroundColor: colors.surface,
+            borderColor: colors.border,
+            borderLeftColor: accent,
+          },
         ]}
       >
-        <Text style={[styles.cardTitle, { color: colors.text }]}>
-          About TGen
-        </Text>
-        <Text style={[styles.body, { color: colors.textMuted }]}>
-          {truncate(TGenInfo.description, 240)}
-        </Text>
-        <Text style={[styles.body, { color: colors.textMuted }]}>
-          Powered by TGen · {TGenInfo.url}
-        </Text>
+        <View style={styles.tgenRow}>
+          <View style={[styles.tgenIcon, { backgroundColor: accent }]}>
+            <Text style={styles.tgenIconText}>⚡</Text>
+          </View>
+          <View style={styles.tgenText}>
+            <Text style={[styles.tgenTitle, { color: colors.text }]}>
+              Made with {TGenInfo.name}
+            </Text>
+            <Text style={[styles.tgenDesc, { color: colors.textMuted }]}>
+              {TGenInfo.description}
+            </Text>
+            <Text style={[styles.tgenUrl, { color: accent }]}>
+              {TGenInfo.url}
+            </Text>
+          </View>
+        </View>
       </View>
 
       <Text style={[styles.footer, { color: colors.textMuted }]}>
@@ -240,6 +251,43 @@ const styles = StyleSheet.create({
     fontSize: 13,
     lineHeight: 20,
     marginBottom: 6,
+  },
+  tgenCard: {
+    borderRadius: 16,
+    borderWidth: 1,
+    borderLeftWidth: 4,
+    padding: 14,
+    marginBottom: 12,
+  },
+  tgenRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  tgenIcon: {
+    width: 40,
+    height: 40,
+    borderRadius: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 12,
+  },
+  tgenIconText: {
+    fontSize: 20,
+  },
+  tgenText: {
+    flex: 1,
+  },
+  tgenTitle: {
+    fontSize: 14,
+    fontWeight: '700',
+  },
+  tgenDesc: {
+    fontSize: 12,
+    marginTop: 2,
+  },
+  tgenUrl: {
+    fontSize: 11,
+    marginTop: 3,
   },
   footer: {
     fontSize: 11,
