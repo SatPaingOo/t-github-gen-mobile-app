@@ -125,7 +125,10 @@ export function AboutScreen() {
             <Text style={[styles.tgenTitle, { color: colors.text }]}>
               Made with {TGenInfo.name}
             </Text>
-            <Text style={[styles.tgenDesc, { color: colors.textMuted }]}>
+            <Text
+              style={[styles.tgenDesc, { color: colors.textMuted }]}
+              numberOfLines={2}
+            >
               {TGenInfo.description}
             </Text>
             <Text style={[styles.tgenUrl, { color: accent }]}>
